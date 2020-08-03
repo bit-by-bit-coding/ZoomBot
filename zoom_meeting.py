@@ -753,5 +753,6 @@ class ZoomMeeting(object):
         """
 
         print("Disabling video receiving")
-        self.d.find_element_by_id("moreButton").click()
+        more_button = self.d.find_element_by_id("moreButton")
+        ActionChains(self.d).move_to_element(more_button).click().perform()
         self.click_if_exists(By.XPATH, '//a[@aria-label="Disable video receiving"]')
