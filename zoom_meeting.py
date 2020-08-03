@@ -271,6 +271,26 @@ class ZoomMeeting(object):
         self.click_if_exists(By.PARTIAL_LINK_TEXT, "join from your browser", self.long_wait)
         self.click_if_exists(By.ID, "btn_end_meeting", self.long_wait)
 
+    def check_if_host(self):
+        """
+        Checks if the signed-in user is the host by detecting the presence of the "breakout rooms" button, a feature ony available to the host.
+        :return:
+        """
+        footer_button_container = self.d.find_element_by_class_name("footer__btns-container")
+        return self.check_if_exists(By.CSS_SELECTOR, "button.footer-button__button.ax-outline[aria-label=Breakout Rooms]")
+      
+
+    def wait_for_host_permissions(self):
+        """
+        Repeatedly checks and asks for host permissions in the log until the bot has host permissions
+        :return:
+        """
+        print("Checking host permissions...")
+        while (not self.check_if_host()):
+            print("Host permissions not granted. Please transfer host permissions.")
+            time.sleep(.5)
+        
+
     def move_is_valid(self, target_user, target_room):
         """
         Determines whether a move is valid. Validity is defined as:
@@ -337,6 +357,7 @@ class ZoomMeeting(object):
         print(f"Waiting {self.very_long_wait} seconds for page...")
         time.sleep(self.very_long_wait)
 
+        self.wait_for_host_permissions()
         self.dismiss_audio()
         self.disable_video_receiving()
         self.disable_screen_sharing()
