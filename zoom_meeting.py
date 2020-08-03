@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
-from helper_functions import ParticipantNotFoundException, RoomIndexNotFoundException
+from helper_functions import ParticipantNotFoundException, RoomIndexNotFoundException, send_keys_over_time
 from urllib3.exceptions import MaxRetryError
 
 
@@ -34,6 +34,7 @@ class ZoomMeeting(object):
     ZOOM_START_PATH     = "https://zoom.us/start/webmeeting"
     ZOOM_PROFILE_PATH   = "https://zoom.us/profile"
     ZOOM_MEETINGS_PATH  = "https://zoom.us/meeting"
+    ZOOM_JOIN_PATH      = "https://zoom.us/join" 
 
     def __init__(self, meeting_params):
         self.d              = None
@@ -388,7 +389,12 @@ class ZoomMeeting(object):
                 self.set_up_call()
                 return None
 
-        print(f"Couldn't find meeting matching ID: {existing_meeting_id}")
+        # the meeting may be owned by someone else, so try to join it through the join interface.
+        self.d.get(self.ZOOM_JOIN_PATH)
+        meeting_id_input = self.d.find_element_by_id('join-confno')
+        send_keys_over_time(meeting_id_input, existing_meeting_id, ms_total=1000)
+        meeting_id_input.submit()
+        self.set_up_call()
 
     def resume_call(self):
         """
