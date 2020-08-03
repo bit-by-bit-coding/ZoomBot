@@ -206,11 +206,11 @@ class ZoomMeeting(object):
 
             for i, name in enumerate(self.room_names):
                 bo_room = bo_room_list_container.find_element_by_xpath(f".//ul/li[{i + 1}]")
-                content = bo_room.find_element_by_xpath(".//div/div/div")
+                content = bo_room.find_element_by_xpath(".//div[1]/div")
 
                 # Mouse over correct room and click rename
                 ActionChains(self.d).move_to_element(content).click().perform()
-                ActionChains(self.d).move_to_element(content.find_element_by_xpath(".//button[1]")).click().perform()
+                ActionChains(self.d).move_to_element(content.find_element_by_xpath(".//div[1]/button[1]")).click().perform()
 
                 # Type in new name and confirm
                 self.d.find_element_by_class_name('confirm-tip__tip').find_element_by_xpath(".//input").send_keys(name)
