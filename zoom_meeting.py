@@ -128,7 +128,8 @@ class ZoomMeeting(object):
         """
         print("Opening chat")
         self.click_if_exists(By.XPATH, '//button[@aria-label="close the chat pane"]')
-        self.d.find_element_by_xpath('//button[@aria-label="open the chat pane"]').click()
+        open_chat_button = self.d.find_element_by_xpath('//button[@aria-label="open the chat pane"]')
+        ActionChains(self.d).move_to_element(open_chat_button).click().perform()
 
     def send_message_to_chat(self, message):
         """
@@ -165,8 +166,9 @@ class ZoomMeeting(object):
         """
         print("Opening participants pane")
         self.click_if_exists(By.XPATH, '//button[starts-with(@aria-label, "close the manage participants list pane")]')
-        self.d.find_element_by_xpath(
-            '//button[starts-with(@aria-label, "open the manage participants list pane")]').click()
+        open_participants_button = self.d.find_element_by_xpath(
+            '//button[starts-with(@aria-label, "open the manage participants list pane")]')
+        ActionChains(self.d).move_to_element(open_participants_button).click().perform()
 
     def open_breakout_room_menu(self):
         """
@@ -280,7 +282,9 @@ class ZoomMeeting(object):
         :return:
         """
         footer_button_container = self.d.find_element_by_class_name("footer__btns-container")
-        return self.check_if_exists(By.CSS_SELECTOR, "button.footer-button__button.ax-outline[aria-label=Breakout Rooms]")
+        exists, elem = self.check_if_exists(By.XPATH, '//button[contains(@aria-label, "Breakout Rooms")]')
+        # //*[@id="wc-footer"]/div/div[2]/button[6]
+        return exists
       
 
     def wait_for_host_permissions(self):
