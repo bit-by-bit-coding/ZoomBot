@@ -196,9 +196,12 @@ class ZoomMeeting(object):
         rooms_not_started, _ = self.check_if_exists(By.CLASS_NAME, 'zmu-number-input', self.long_wait)
 
         if rooms_not_started:
+            # set number of rooms
             self.d.find_element_by_class_name('zmu-number-input').send_keys(Keys.BACKSPACE)
             self.d.find_element_by_class_name('zmu-number-input').send_keys(str(len(self.room_names)))
+            # set participant distributon to manual
             self.d.find_element_by_xpath('//div[@aria-label="Manually"]').click()
+            # confirm
             self.d.find_element_by_class_name("bo-createwindow-content__actions").\
                 find_element_by_xpath('.//button[2]').click()
 
@@ -206,8 +209,8 @@ class ZoomMeeting(object):
             bo_room_list_container = self.d.find_element_by_class_name("bo-room-list-container")
 
             for i, name in enumerate(self.room_names):
-                bo_room = bo_room_list_container.find_element_by_xpath(f".//ul/li[{i + 1}]")
-                content = bo_room.find_element_by_xpath(".//div[1]/div")
+                bo_room = bo_room_list_container.find_element_by_xpath(f".//ul/li[{i + 1}]")#the list item containing the breakout room
+                content = bo_room.find_element_by_xpath(".//div[1]/div") # the container where the button will appear most likely
 
                 # Mouse over correct room and click rename
                 ActionChains(self.d).move_to_element(content).click().perform()
@@ -231,7 +234,7 @@ class ZoomMeeting(object):
 
     def check_if_exists(self, by_tag, link_tag, wait_time=None):
         """
-        Checks for the existence of a particular element on the DOM
+        waits for the existence of a particular element on the DOM
         :param by_tag:
         :param link_tag:
         :param wait_time:
@@ -389,7 +392,7 @@ class ZoomMeeting(object):
 
     def start_scheduled_call(self, existing_meeting_id):
         """
-        Checks the meetings tab for a scheduled meeting matching existing_meeting_id
+        Checks the meetings tab for a scheduled meeting matching existing_meeting_id. if none is found, try to join the meeting using zoom's "join a meeting" button
         :param existing_meeting_id:
         :return:
         """

@@ -30,7 +30,7 @@ if resume_meeting_successful:
     zm.resume_call()
 
 else:  # Make new meeting or start a scheduled one
-
+    # detect login from the page may be better....
     if not zm.logged_in():
         zm.login()
 
