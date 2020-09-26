@@ -1,6 +1,12 @@
 # ZoomBot
  Selenium + Zoom Breakout Room Reassigning Tool
 
+
+## Now Officially Suported
+
+As per [this issue](https://github.com/mrcromulent/ZoomBot/issues/1) from the original upstream repository, it seems like this functionality is [being integrated into the main zoom apps](https://support.zoom.us/hc/en-us/articles/201361953) on 9/25/2020.
+
+
 ## Purpose
 ZoomBot was designed for the Society for Creative Anachronism's (SCA's) Polit University Online event, run by the [Barony of Politarchopolis](https://politarchopolis.lochac.sca.org/). This event ran several classrooms in parallel using [Zoom's](https://zoom.us/) Breakout Rooms feature. At time of writing, the Zoom API does not allow users to move themselves between Breakout Rooms either in the UI or programatically, so this program uses the Zoom Chat. Commands should be of the form:
 
